@@ -80,7 +80,7 @@ st.markdown(
       but 1–7 days late drops to 2.7★ and 8+ days late to just 1.7★.
     - **Revenue is spread out:** the top 3 categories (health & beauty, watches & gifts,
       bed/bath/table) bring in only about 25% of revenue, and the top 10 about 62%.
-    - **Fast growth, then a plateau:** monthly revenue grew from about R$ 127k in Jan 2017
-      to a R$ 1.15M peak in Nov 2017 (Black Friday), then levelled off around R$ 1.0–1.1M a month in 2018.
+    - **Fast growth, then a plateau:** monthly revenue grew from about R\\$ 127k in Jan 2017
+      to a R\\$ 1.15M peak in Nov 2017 (Black Friday), then levelled off around R\\$ 1.0–1.1M a month in 2018.
     """
 )
