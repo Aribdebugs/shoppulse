@@ -41,3 +41,20 @@ def top_categories(sales, n=10):
         .head(n)
         .reset_index()
     )
+
+
+def review_by_delivery(sales, reviews):
+    """Average review score for early / on-time / late orders."""
+    # One row per order, so orders with many items don't count extra
+    orders = sales.drop_duplicates("order_id")[["order_id", "delay_days"]]
+
+    # Inner join: only orders that have a review
+    orders = orders.merge(reviews, on="order_id", how="inner")
+
+    # Bins are right-inclusive: <=-1 early, 0 on time, 1-7 late, 8+ very late
+    orders["delivery_group"] = pd.cut(
+        orders["delay_days"],
+        bins=[-1000, -1, 0, 7, 1000],
+        labels=["Early", "On time", "1-7 days late", "8+ days late"],
+    )
+    return orders.groupby("delivery_group", observed=True)["review_score"].mean().reset_index()
