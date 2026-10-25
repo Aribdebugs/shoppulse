@@ -9,4 +9,5 @@ __pycache__/
 venv/
 
 # Secrets (never commit these)
-.envdesktop.ini
+.env
+desktop.ini
