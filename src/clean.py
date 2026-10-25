@@ -57,15 +57,22 @@ def build_sales_table(tables):
     # inner join: items whose order isn't in the cleaned (delivered) orders are dropped
     sales = tables["items"].merge(orders, on="order_id", how="inner")
     # TODO 9: merge in products, then the category translation
+    # left joins: keep every sale even if its product/category info is missing
+    sales = sales.merge(tables["products"], on="product_id", how="left")
+    sales = sales.merge(tables["categories"], on="product_category_name", how="left")
+
     # TODO 10: fill missing English category names with "unknown"
+    sales["product_category_name_english"] = sales["product_category_name_english"].fillna("unknown")
+
     # TODO 11: call add_features
+    sales = add_features(sales)
     return sales
 
 
 def build_review_table(tables):
     """Average review score per order."""
     # TODO 12: group reviews by order_id and take the mean of review_score
-    pass
+    return tables["reviews"].groupby("order_id", as_index=False)["review_score"].mean()
 
 
 if __name__ == "__main__":
@@ -74,3 +81,6 @@ if __name__ == "__main__":
     print(sales.shape)
     print(sales.head())
     # TODO 13: save sales to PROCESSED_DIR / "sales.parquet" with .to_parquet()
+    PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+    sales.to_parquet(PROCESSED_DIR / "sales.parquet", index=False)
+    print(f"Saved {len(sales):,} rows to {PROCESSED_DIR / 'sales.parquet'}")
